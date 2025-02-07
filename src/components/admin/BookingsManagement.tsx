@@ -46,7 +46,7 @@ interface SupabaseResponse {
   receipt_path: string | null;
   amount_paid: number | null;
   guest: { email: string } | null;
-  room: { number: string; type: string } | null;
+  room: { name: string } | null;
 }
 
 interface Booking {
@@ -63,7 +63,7 @@ interface Booking {
   receipt_path: string | null;
   amount_paid: number | null;
   guest: { email: string };
-  room: { number: string; type: string };
+  room: { name: string };
 }
 
 const BookingsManagement = () => {
