@@ -11,6 +11,7 @@ import BookingPage from '@/pages/booking';
 import PaymentPage from '@/pages/payment';
 import AdminDashboard from '@/pages/admin';
 import ConfirmationLetter from '@/pages/admin/confirmation-letter';
+import UserDetails from '@/pages/admin/user-details';
 
 function App() {
   return (
@@ -44,6 +45,15 @@ function App() {
                   </RequireAdmin>
                 }
               />
+              <Route
+                path="/admin/users/:userId"
+                element={
+                  <RequireAdmin>
+                    <UserDetails />
+                  </RequireAdmin>
+                }
+              />
+
             </Routes>
           </main>
         </div>
