@@ -17,7 +17,7 @@ const registerSchema = z.object({
   callUpNumber: z.string().min(5, 'Call-Up Number is required'),
   stateOfOrigin: z.string().min(2, 'State of Origin is required'),
   lga: z.string().min(2, 'Local Government Area is required'),
-  gender: z.enum(['male', 'female']),
+  gender: z.enum(['male', 'female']).default('male'),
   dateOfBirth: z.string().min(1, 'Date of Birth is required'),
   maritalStatus: z.enum(['single', 'married', 'divorced', 'widowed']),
   mcanRegNo: z.string().min(1, 'MCAN Registration Number is required'),
@@ -74,25 +74,30 @@ export default function RegisterPage() {
         const profilePayload = {
           id: authData.user.id,
           full_name: data.fullName,
+          username: data.fullName, // Add username field using fullName
           email: data.email,
           phone: data.phone,
           address: data.address,
           call_up_number: data.callUpNumber,
           state_of_origin: data.stateOfOrigin,
-          lga: data.lga,
+          local_govt_area: data.lga,
           gender: data.gender,
-          date_of_birth: data.dateOfBirth,
+          date_of_birth: new Date(data.dateOfBirth).toISOString(),
           marital_status: data.maritalStatus,
-          mcan_reg_no: data.mcanRegNo,
+          mcan_reg_number: data.mcanRegNo,
           institution: data.institution,
-          emergency_contact_name: data.emergencyContactName,
-          emergency_contact_address: data.emergencyContactAddress,
-          emergency_contact_phone1: data.emergencyContactPhone1,
-          emergency_contact_phone2: data.emergencyContactPhone2 || null,
-          next_of_kin_name: data.nextOfKinName,
-          next_of_kin_address: data.nextOfKinAddress,
-          next_of_kin_phone1: data.nextOfKinPhone1,
-          next_of_kin_phone2: data.nextOfKinPhone2 || null,
+          emergency_contact: {
+            name: data.emergencyContactName,
+            address: data.emergencyContactAddress,
+            phone1: data.emergencyContactPhone1,
+            phone2: data.emergencyContactPhone2 || null
+          },
+          next_of_kin: {
+            name: data.nextOfKinName,
+            address: data.nextOfKinAddress,
+            phone1: data.nextOfKinPhone1,
+            phone2: data.nextOfKinPhone2 || null
+          },
           islamic_knowledge_level: data.islamicKnowledgeLevel,
           dietary_preferences: data.dietaryPreferences,
           prayer_requirements: data.prayerRequirements,
@@ -305,9 +310,6 @@ export default function RegisterPage() {
                     <option value="male">Male</option>
                     <option value="female">Female</option>
                   </select>
-                  {errors.gender && (
-                    <p className="mt-1 text-sm text-red-600">{errors.gender.message}</p>
-                  )}
                 </div>
 
                 <div>
