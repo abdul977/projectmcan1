@@ -92,12 +92,11 @@ const BookingsManagement = () => {
       header: 'Guest Email',
     },
     {
-      accessorKey: 'room.number',
+      accessorKey: 'room.name',
       header: 'Room',
       cell: ({ row }) => (
         <div>
-          <div className="font-medium">Room {row.original.room?.number || 'N/A'}</div>
-          <div className="text-sm text-gray-500">{row.original.room?.type || 'N/A'}</div>
+          <div className="font-medium">Room {row.original.room?.name || 'N/A'}</div>
         </div>
       ),
     },
