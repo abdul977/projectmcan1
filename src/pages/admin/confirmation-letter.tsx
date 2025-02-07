@@ -496,20 +496,79 @@ export default function ConfirmationLetter() {
                   </div>
                 </div>
 
-                {/* Signature and Date */}
-                <div className="mt-6 flex justify-between items-center">
+              {/* Comprehensive Acceptance Form */}
+              <div className="mt-8 p-6 bg-gradient-to-r from-green-50 to-green-100 border-2 border-green-200 rounded-lg shadow-xl">
+                <h3 className="text-xl font-bold text-green-800 mb-6 text-center">
+                  ACCEPTANCE OF TERMS AND CONDITIONS
+                </h3>
+                
+                <div className="space-y-4 mb-6">
+                  <div className="flex items-start">
+                    <input 
+                      type="checkbox" 
+                      className="mr-3 mt-1 text-green-600 focus:ring-green-500 border-gray-300 rounded"
+                    />
+                    <label className="text-gray-700">
+                      I have carefully read and fully understand the MCAN Lodge Rules and Regulations.
+                    </label>
+                  </div>
+                  <div className="flex items-start">
+                    <input 
+                      type="checkbox" 
+                      className="mr-3 mt-1 text-green-600 focus:ring-green-500 border-gray-300 rounded"
+                    />
+                    <label className="text-gray-700">
+                      I agree to abide by all rules and regulations set forth by MCAN FCT Chapter.
+                    </label>
+                  </div>
+                  <div className="flex items-start">
+                    <input 
+                      type="checkbox" 
+                      className="mr-3 mt-1 text-green-600 focus:ring-green-500 border-gray-300 rounded"
+                    />
+                    <label className="text-gray-700">
+                      I understand that violation of these rules may result in disciplinary action, including potential eviction.
+                    </label>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">Signature</label>
-                    <div className="mt-1 h-12 w-48 border border-gray-300 rounded-md"></div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Resident Signature
+                    </label>
+                    <div className="border-b-2 border-green-600 pb-2 w-full"></div>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">Date</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Date of Acceptance
+                    </label>
                     <input 
                       type="date" 
-                      className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
+                      className="block w-full border-2 border-green-300 rounded-md shadow-sm py-2 px-3 focus:ring-2 focus:ring-green-500"
                     />
                   </div>
                 </div>
+
+                <div className="mt-6 text-center">
+                  <p className="text-sm italic text-gray-600">
+                    By signing below, you acknowledge that this document represents a binding agreement 
+                    valued at $40,000 in administrative and accommodation services.
+                  </p>
+                </div>
+              </div>
+
+              {/* Official Seal and Validation */}
+              <div className="mt-6 border-t-2 border-green-600 pt-4 text-center">
+                <div className="inline-block border-4 border-green-800 px-4 py-2 rounded-lg">
+                  <p className="text-lg font-bold text-green-900">
+                    OFFICIAL MCAN VALIDATION
+                  </p>
+                  <p className="text-sm text-gray-700">
+                    Accommodation Services Certification
+                  </p>
+                </div>
+              </div>
               </div>
             </Card>
           )}
