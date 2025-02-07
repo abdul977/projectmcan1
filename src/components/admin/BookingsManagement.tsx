@@ -165,11 +165,11 @@ const BookingsManagement = () => {
           updated_at,
           receipt_path,
           amount_paid,
-          profiles (
+          guest:profiles!user_id (
             full_name,
             email
           ),
-          rooms (
+          room:rooms!room_id (
             number,
             type
           )
@@ -184,15 +184,14 @@ const BookingsManagement = () => {
         throw error;
       }
 
-      const transformedData = (data || [] as Booking[])
+      const transformedData = (data || [] as any[])
         .filter(booking => ['active', 'approved', 'confirmed', 'pending'].includes(booking.status))
         .map(booking => ({
           ...booking,
-          profiles: {
-            full_name: booking.profiles?.[0]?.full_name || 'N/A',
-            email: booking.profiles?.[0]?.email || 'N/A'
-          },
-          rooms: booking.rooms?.[0] || { number: 'N/A', type: 'N/A' }
+          'profiles.full_name': booking.guest?.full_name || 'N/A',
+          'profiles.email': booking.guest?.email || 'N/A',
+          'rooms.number': booking.room?.number || 'N/A',
+          'rooms.type': booking.room?.type || 'N/A'
         }));
         
       console.log('Transformed bookings:', transformedData);
