@@ -20,40 +20,45 @@ interface Profile {
 }
 
 export default function ConfirmationLetter() {
-  const [userId, setUserId] = useState('');
-  const [profile, setProfile] = useState<Profile | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [profiles, setProfiles] = useState<Profile[]>([]);
+  const [selectedProfile, setSelectedProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(false);
   const [searching, setSearching] = useState(false);
 
-  async function searchUser() {
-    if (!userId.trim()) {
-      toast.error('Please enter a user ID');
+  async function searchUsers() {
+    if (!searchQuery.trim()) {
+      toast.error('Please enter a search term');
       return;
     }
 
     setSearching(true);
     try {
-      // Get user profile using POST method
-      const { data: profileData, error } = await supabase
+      const searchTerm = searchQuery.toLowerCase().trim();
+      
+      // Search across multiple fields
+      const { data: profilesData, error } = await supabase
         .from('profiles')
         .select('id, full_name, email, phone, address, gender, status, role')
-        .eq('id', userId)
-        .maybeSingle();
+        .or(`full_name.ilike.%${searchTerm}%,email.ilike.%${searchTerm}%,phone.ilike.%${searchTerm}%`)
+        .order('full_name', { ascending: true });
 
       if (error) {
         console.error('Profile query error:', error);
         throw error;
       }
 
-      if (!profileData) {
-        toast.error('User not found');
+      if (!profilesData?.length) {
+        toast.error('No users found');
+        setProfiles([]);
         return;
       }
 
-      setProfile(profileData);
-      toast.success('User found');
+      setProfiles(profilesData);
+      setSelectedProfile(null);
+      toast.success(`Found ${profilesData.length} users`);
     } catch (error) {
-      console.error('Error searching user:', error);
+      console.error('Error searching users:', error);
       toast.error('Failed to fetch user details');
     } finally {
       setSearching(false);
@@ -61,7 +66,7 @@ export default function ConfirmationLetter() {
   }
 
   async function generatePDF() {
-    if (!profile) return;
+    if (!selectedProfile) return;
 
     setLoading(true);
     try {
@@ -91,15 +96,15 @@ export default function ConfirmationLetter() {
       yPos += 10;
       
       doc.setFont('helvetica', 'normal');
-      doc.text(`Full Name: ${profile.full_name}`, 20, yPos);
+      doc.text(`Full Name: ${selectedProfile.full_name}`, 20, yPos);
       yPos += 8;
-      doc.text(`Email: ${profile.email}`, 20, yPos);
+      doc.text(`Email: ${selectedProfile.email}`, 20, yPos);
       yPos += 8;
-      doc.text(`Phone: ${profile.phone || 'Not provided'}`, 20, yPos);
+      doc.text(`Phone: ${selectedProfile.phone || 'Not provided'}`, 20, yPos);
       yPos += 8;
-      doc.text(`Gender: ${profile.gender || 'Not specified'}`, 20, yPos);
+      doc.text(`Gender: ${selectedProfile.gender || 'Not specified'}`, 20, yPos);
       yPos += 8;
-      doc.text(`Address: ${profile.address || 'Not provided'}`, 20, yPos);
+      doc.text(`Address: ${selectedProfile.address || 'Not provided'}`, 20, yPos);
       yPos += 20;
 
       // Rules and Regulations
@@ -153,7 +158,7 @@ export default function ConfirmationLetter() {
       doc.text('Date: _____________________', 20, yPos);
 
       // Save the PDF
-      doc.save(`confirmation_letter_${profile.id}.pdf`);
+      doc.save(`confirmation_letter_${selectedProfile.id}.pdf`);
       toast.success('Confirmation letter generated successfully');
     } catch (error) {
       console.error('Error generating PDF:', error);
@@ -171,27 +176,53 @@ export default function ConfirmationLetter() {
             <div className="flex gap-4">
               <Input
                 type="text"
-                placeholder="Enter User ID"
-                value={userId}
-                onChange={(e) => setUserId(e.target.value)}
+                placeholder="Search by name, email, or phone"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyPress={(e) => e.key === 'Enter' && searchUsers()}
               />
-              <Button onClick={searchUser} disabled={searching}>
+              <Button onClick={searchUsers} disabled={searching}>
                 <Search className="w-4 h-4 mr-2" />
                 {searching ? 'Searching...' : 'Search'}
               </Button>
             </div>
           </Card>
 
-          {profile && (
+          {profiles.length > 0 && (
+            <Card className="p-6">
+              <h3 className="text-lg font-semibold mb-4">Search Results</h3>
+              <div className="space-y-4">
+                {profiles.map((profile) => (
+                  <div
+                    key={profile.id}
+                    className={`p-4 rounded-lg cursor-pointer transition-colors ${
+                      selectedProfile?.id === profile.id
+                        ? 'bg-primary/10 border-2 border-primary'
+                        : 'bg-muted/50 hover:bg-muted'
+                    }`}
+                    onClick={() => setSelectedProfile(profile)}
+                  >
+                    <p className="font-medium">{profile.full_name}</p>
+                    <p className="text-sm text-muted-foreground">{profile.email}</p>
+                    {profile.phone && (
+                      <p className="text-sm text-muted-foreground">{profile.phone}</p>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </Card>
+          )}
+
+          {selectedProfile && (
             <Card className="p-6 space-y-4">
               <div className="grid gap-4">
-                <h3 className="text-lg font-semibold">User Details</h3>
+                <h3 className="text-lg font-semibold">Selected User Details</h3>
                 <div className="grid gap-2">
-                  <p><span className="font-medium">Name:</span> {profile.full_name}</p>
-                  <p><span className="font-medium">Email:</span> {profile.email}</p>
-                  <p><span className="font-medium">Phone:</span> {profile.phone || 'Not provided'}</p>
-                  <p><span className="font-medium">Gender:</span> {profile.gender || 'Not specified'}</p>
-                  <p><span className="font-medium">Address:</span> {profile.address || 'Not provided'}</p>
+                  <p><span className="font-medium">Name:</span> {selectedProfile.full_name}</p>
+                  <p><span className="font-medium">Email:</span> {selectedProfile.email}</p>
+                  <p><span className="font-medium">Phone:</span> {selectedProfile.phone || 'Not provided'}</p>
+                  <p><span className="font-medium">Gender:</span> {selectedProfile.gender || 'Not specified'}</p>
+                  <p><span className="font-medium">Address:</span> {selectedProfile.address || 'Not provided'}</p>
                 </div>
                 <Button
                   className="w-full"

@@ -4,6 +4,7 @@ import { useAuth } from '@/hooks/use-auth';
 import { Button } from '@/components/ui/button';
 import { UserList } from '@/components/admin/UserList';
 import { PaymentVerification } from '@/components/admin/PaymentVerification';
+import BookingsManagement from '@/components/admin/BookingsManagement';
 import { DashboardStats } from '@/components/admin/DashboardStats';
 import { supabase } from '@/lib/supabase';
 import {
@@ -198,12 +199,7 @@ export default function AdminDashboard() {
             {activeTab === 'payments' && <PaymentVerification />}
             {activeTab === 'overview' && <DashboardStats />}
 
-            {activeTab === 'bookings' && (
-              <div className="bg-white rounded-lg shadow p-6">
-                <h2 className="text-xl font-semibold mb-4">Bookings Management</h2>
-                <p className="text-gray-500">Bookings management will be available soon.</p>
-              </div>
-            )}
+            {activeTab === 'bookings' && <BookingsManagement />}
 
             {activeTab === 'feedback' && adminUser.role === 'admin' && (
               <div className="bg-white rounded-lg shadow p-6">

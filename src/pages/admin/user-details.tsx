@@ -127,6 +127,10 @@ export default function UserDetails() {
           <CardContent>
             <dl className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
+                <dt className="text-sm font-medium text-gray-500">User ID</dt>
+                <dd className="text-lg font-mono text-gray-900">{user.id}</dd>
+              </div>
+              <div>
                 <dt className="text-sm font-medium text-gray-500">Full Name</dt>
                 <dd className="text-lg text-gray-900">{user.full_name}</dd>
               </div>
