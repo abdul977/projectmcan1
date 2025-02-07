@@ -32,6 +32,23 @@ import {
 import { ChevronDown, ChevronUp, Search, RefreshCw } from 'lucide-react';
 import toast from 'react-hot-toast';
 
+interface SupabaseResponse {
+  id: string;
+  user_id: string;
+  room_id: string;
+  check_in_date: string;
+  check_out_date: string;
+  total_price: number;
+  status: 'pending' | 'active' | 'approved' | 'completed';
+  payment_status: 'pending' | 'paid' | 'refunded';
+  created_at: string;
+  updated_at: string;
+  receipt_path: string | null;
+  amount_paid: number | null;
+  guest: { email: string; }[];
+  room: { number: string; type: string; }[];
+}
+
 interface Booking {
   id: string;
   user_id: string;
@@ -190,16 +207,16 @@ const BookingsManagement = () => {
         throw error;
       }
 
-      const transformedData = (data || [])
+      const transformedData = (data || [] as SupabaseResponse[])
         .filter(booking => ['active', 'approved', 'confirmed', 'pending'].includes(booking.status))
         .map(booking => ({
           ...booking,
           guest: {
-            email: booking.guest?.email || 'N/A'
+            email: booking.guest?.[0]?.email || 'N/A'
           },
           room: {
-            number: booking.room?.number || 'N/A',
-            type: booking.room?.type || 'N/A'
+            number: booking.room?.[0]?.number || 'N/A',
+            type: booking.room?.[0]?.type || 'N/A'
           }
         })) as Booking[];
         
