@@ -64,38 +64,49 @@ export default function RegisterPage() {
       if (authError) throw authError;
 
       if (authData.user) {
-        const { error: profileError } = await supabase
-          .from('profiles')
-          .insert([
-            {
-              id: authData.user.id,
-              full_name: data.fullName,
-              email: data.email,
-              phone: data.phone,
-              address: data.address,
-              call_up_number: data.callUpNumber,
-              state_of_origin: data.stateOfOrigin,
-              lga: data.lga,
-              gender: data.gender,
-              date_of_birth: data.dateOfBirth,
-              marital_status: data.maritalStatus,
-              mcan_reg_no: data.mcanRegNo,
-              institution: data.institution,
-              emergency_contact_name: data.emergencyContactName,
-              emergency_contact_address: data.emergencyContactAddress,
-              emergency_contact_phone1: data.emergencyContactPhone1,
-              emergency_contact_phone2: data.emergencyContactPhone2,
-              next_of_kin_name: data.nextOfKinName,
-              next_of_kin_address: data.nextOfKinAddress,
-              next_of_kin_phone1: data.nextOfKinPhone1,
-              next_of_kin_phone2: data.nextOfKinPhone2,
-              islamic_knowledge_level: data.islamicKnowledgeLevel,
-              dietary_preferences: data.dietaryPreferences,
-              prayer_requirements: data.prayerRequirements,
-            },
-          ]);
+        console.log('Attempting to insert profile:', {
+          id: authData.user.id,
+          full_name: data.fullName,
+          email: data.email,
+          phone: data.phone,
+        });
 
-        if (profileError) throw profileError;
+        const { data: profileData, error: profileError } = await supabase
+          .from('profiles')
+          .insert({
+            id: authData.user.id,
+            full_name: data.fullName,
+            email: data.email,
+            phone: data.phone,
+            address: data.address,
+            call_up_number: data.callUpNumber,
+            state_of_origin: data.stateOfOrigin,
+            lga: data.lga,
+            gender: data.gender,
+            date_of_birth: data.dateOfBirth,
+            marital_status: data.maritalStatus,
+            mcan_reg_no: data.mcanRegNo,
+            institution: data.institution,
+            emergency_contact_name: data.emergencyContactName,
+            emergency_contact_address: data.emergencyContactAddress,
+            emergency_contact_phone1: data.emergencyContactPhone1,
+            emergency_contact_phone2: data.emergencyContactPhone2,
+            next_of_kin_name: data.nextOfKinName,
+            next_of_kin_address: data.nextOfKinAddress,
+            next_of_kin_phone1: data.nextOfKinPhone1,
+            next_of_kin_phone2: data.nextOfKinPhone2,
+            islamic_knowledge_level: data.islamicKnowledgeLevel,
+            dietary_preferences: data.dietaryPreferences,
+            prayer_requirements: data.prayerRequirements,
+          })
+          .select();
+
+        if (profileError) {
+          console.error('Profile insertion error:', profileError);
+          throw profileError;
+        }
+
+        console.log('Profile inserted successfully:', profileData);
       }
 
       toast.success('Registration successful! Please check your email to verify your account.');
