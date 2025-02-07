@@ -65,108 +65,110 @@ export default function ConfirmationLetter() {
     }
   }
 
-  async function generatePDF() {
-    if (!selectedProfile) return;
+      async function generatePDF() {
+        if (!selectedProfile) return;
 
-    setLoading(true);
-    try {
-      const doc = new jsPDF();
-      const pageWidth = doc.internal.pageSize.getWidth();
-      let yPos = 20;
+        setLoading(true);
+        try {
+          const doc = new jsPDF();
+          const pageWidth = doc.internal.pageSize.getWidth();
+          let yPos = 20;
 
-      // Header
-      doc.setFontSize(20);
-      doc.setFont('helvetica', 'bold');
-      doc.text('MCAN HOSTEL', pageWidth / 2, yPos, { align: 'center' });
-      yPos += 10;
+          // MCAN Logo (URL from previous document)
+          const logoUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRt9tu2jBmeR0z3xxTGMLY-EHri-sqrUTPXbt5q55knyyqzkNaHyTcMEiE&s=10";
+          
+          // Header with MCAN Logo and Title
+          doc.setFontSize(20);
+          doc.setFont('helvetica', 'bold');
+          doc.text('MUSLIM CORPERS\' ASSOCIATION OF NIGERIA', pageWidth / 2, yPos, { align: 'center' });
+          yPos += 10;
+          doc.setFontSize(16);
+          doc.text('FCT CHAPTER - ACCOMMODATION CONFIRMATION', pageWidth / 2, yPos, { align: 'center' });
+          yPos += 20;
 
-      doc.setFontSize(16);
-      doc.text('BEDSPACE CONFIRMATION LETTER', pageWidth / 2, yPos, { align: 'center' });
-      yPos += 20;
+          // Date
+          doc.setFontSize(12);
+          doc.setFont('helvetica', 'normal');
+          doc.text(`Date: ${new Date().toLocaleDateString()}`, 20, yPos);
+          yPos += 20;
 
-      // Date
-      doc.setFontSize(12);
-      doc.setFont('helvetica', 'normal');
-      doc.text(`Date: ${new Date().toLocaleDateString()}`, 20, yPos);
-      yPos += 20;
+          // Resident Details
+          doc.setFont('helvetica', 'bold');
+          doc.text('RESIDENT INFORMATION', 20, yPos);
+          yPos += 10;
+          
+          doc.setFont('helvetica', 'normal');
+          doc.text(`Full Name: ${selectedProfile.full_name}`, 20, yPos);
+          yPos += 8;
+          doc.text(`Email: ${selectedProfile.email}`, 20, yPos);
+          yPos += 8;
+          doc.text(`Phone: ${selectedProfile.phone || 'Not provided'}`, 20, yPos);
+          yPos += 8;
+          doc.text(`Gender: ${selectedProfile.gender || 'Not specified'}`, 20, yPos);
+          yPos += 8;
+          doc.text(`Address: ${selectedProfile.address || 'Not provided'}`, 20, yPos);
+          yPos += 20;
 
-      // Resident Details
-      doc.setFont('helvetica', 'bold');
-      doc.text('RESIDENT INFORMATION', 20, yPos);
-      yPos += 10;
-      
-      doc.setFont('helvetica', 'normal');
-      doc.text(`Full Name: ${selectedProfile.full_name}`, 20, yPos);
-      yPos += 8;
-      doc.text(`Email: ${selectedProfile.email}`, 20, yPos);
-      yPos += 8;
-      doc.text(`Phone: ${selectedProfile.phone || 'Not provided'}`, 20, yPos);
-      yPos += 8;
-      doc.text(`Gender: ${selectedProfile.gender || 'Not specified'}`, 20, yPos);
-      yPos += 8;
-      doc.text(`Address: ${selectedProfile.address || 'Not provided'}`, 20, yPos);
-      yPos += 20;
+          // MCAN Specific Rules and Regulations
+          doc.setFont('helvetica', 'bold');
+          doc.text('LODGE RULES AND REGULATIONS', 20, yPos);
+          yPos += 10;
 
-      // Rules and Regulations
-      doc.setFont('helvetica', 'bold');
-      doc.text('HOSTEL RULES AND REGULATIONS', 20, yPos);
-      yPos += 10;
+          doc.setFont('helvetica', 'normal');
+          const mcanRules = [
+            '1. Religious Practice: Only Islamic religion is practiced within the lodge.',
+            '2. Respect and Conduct: Treat all lodgers with utmost respect.',
+            '3. Dress Code: Adhere strictly to modest Islamic dress guidelines.',
+            '4. Sanitation: Actively participate in lodge cleanliness and maintenance.',
+            '5. Financial Obligations: Pay monthly dues before the 10th of each month.',
+            '6. No Illegal Activities: Strictly forbidden within the lodge premises.',
+            '7. Visitors: No unauthorized visitors are allowed.',
+            '8. Sound Systems: Maintain low volume to avoid disturbing others.',
+            '9. Personal Belongings: All MCAN materials remain MCAN property.',
+            '10. Conduct: Embody Islamic teachings and principles at all times.'
+          ];
 
-      doc.setFont('helvetica', 'normal');
-      const rules = [
-        '1. Maintain cleanliness and orderliness in rooms and common areas.',
-        '2. Observe quiet hours from 11:00 PM to 6:00 AM.',
-        '3. No unauthorized visitors allowed in rooms.',
-        '4. No smoking, alcohol, or illegal substances permitted.',
-        '5. Report maintenance issues promptly.',
-        '6. Follow waste disposal and recycling guidelines.',
-        '7. No modification of room furniture or fixtures.',
-        '8. Keep valuable items secure and locked.',
-        '9. Respect other residents and staff.',
-        '10. Follow check-in and check-out procedures.'
-      ];
+          mcanRules.forEach(rule => {
+            if (yPos > 250) {
+              doc.addPage();
+              yPos = 20;
+            }
+            doc.text(rule, 20, yPos);
+            yPos += 8;
+          });
 
-      rules.forEach(rule => {
-        if (yPos > 250) {
-          doc.addPage();
-          yPos = 20;
+          yPos += 20;
+
+          // Motto
+          doc.setFont('helvetica', 'italic');
+          doc.text('"Say verily, my prayer, my sacrifice, my living, and my dying are for Allah, the lord of the worlds" (Q16:162)', 20, yPos, { maxWidth: pageWidth - 40 });
+          yPos += 20;
+
+          // Acceptance Declaration
+          doc.setFont('helvetica', 'bold');
+          doc.text('ACCEPTANCE DECLARATION', 20, yPos);
+          yPos += 10;
+
+          doc.setFont('helvetica', 'normal');
+          doc.text('I hereby acknowledge that I have read, understood, and agree to abide by', 20, yPos);
+          yPos += 8;
+          doc.text('all MCAN lodge rules and regulations during my stay.', 20, yPos);
+          yPos += 20;
+
+          doc.text('Resident Signature: _____________________', 20, yPos);
+          yPos += 15;
+          doc.text('Date: _____________________', 20, yPos);
+
+          // Save the PDF
+          doc.save(`mcan_confirmation_letter_${selectedProfile.id}.pdf`);
+          toast.success('MCAN Confirmation letter generated successfully');
+        } catch (error) {
+          console.error('Error generating PDF:', error);
+          toast.error('Failed to generate MCAN confirmation letter');
+        } finally {
+          setLoading(false);
         }
-        doc.text(rule, 20, yPos);
-        yPos += 8;
-      });
-
-      yPos += 20;
-
-      // Acceptance Form
-      if (yPos > 200) {
-        doc.addPage();
-        yPos = 20;
       }
-
-      doc.setFont('helvetica', 'bold');
-      doc.text('ACCEPTANCE DECLARATION', 20, yPos);
-      yPos += 10;
-
-      doc.setFont('helvetica', 'normal');
-      doc.text('I hereby acknowledge that I have read and understood the hostel rules and', 20, yPos);
-      yPos += 8;
-      doc.text('regulations. I agree to abide by them during my stay at MCAN HOSTEL.', 20, yPos);
-      yPos += 20;
-
-      doc.text('Resident Signature: _____________________', 20, yPos);
-      yPos += 15;
-      doc.text('Date: _____________________', 20, yPos);
-
-      // Save the PDF
-      doc.save(`confirmation_letter_${selectedProfile.id}.pdf`);
-      toast.success('Confirmation letter generated successfully');
-    } catch (error) {
-      console.error('Error generating PDF:', error);
-      toast.error('Failed to generate confirmation letter');
-    } finally {
-      setLoading(false);
-    }
-  }
 
   return (
     <AdminLayout>
