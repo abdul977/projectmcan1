@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { supabase } from '@/lib/supabase';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
-import { Search } from 'lucide-react';
+import { Search, Printer, ChevronDown, ChevronUp } from 'lucide-react';
 import { AdminLayout } from '@/components/layout/admin-layout';
 import jsPDF from 'jspdf';
 import toast from 'react-hot-toast';
