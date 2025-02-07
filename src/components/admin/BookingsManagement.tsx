@@ -75,12 +75,12 @@ const BookingsManagement = () => {
       header: 'Guest Email',
     },
     {
-      accessorKey: 'rooms.number',
+      accessorKey: 'room.number',
       header: 'Room',
       cell: ({ row }) => (
         <div>
-          <div className="font-medium">Room {row.original.rooms?.number || 'N/A'}</div>
-          <div className="text-sm text-gray-500">{row.original.rooms?.type || 'N/A'}</div>
+          <div className="font-medium">Room {row.original.room?.number || 'N/A'}</div>
+          <div className="text-sm text-gray-500">{row.original.room?.type || 'N/A'}</div>
         </div>
       ),
     },
@@ -267,10 +267,10 @@ const BookingsManagement = () => {
           <div className="flex items-center gap-2">
             <Search className="h-4 w-4 text-gray-500" />
             <Input
-              placeholder="Filter by guest name..."
-              value={(table.getColumn('profiles.full_name')?.getFilterValue() as string) ?? ''}
+              placeholder="Filter by guest email..."
+              value={(table.getColumn('guest.email')?.getFilterValue() as string) ?? ''}
               onChange={(e) =>
-                table.getColumn('profiles.full_name')?.setFilterValue(e.target.value)
+                table.getColumn('guest.email')?.setFilterValue(e.target.value)
               }
               className="max-w-sm"
             />
