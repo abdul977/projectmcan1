@@ -25,6 +25,65 @@ export default function ConfirmationLetter() {
   const [selectedProfile, setSelectedProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(false);
   const [searching, setSearching] = useState(false);
+  const [showRules, setShowRules] = useState(false);
+  const formRef = useRef<HTMLDivElement>(null);
+
+  const handlePrint = () => {
+    if (formRef.current) {
+      const printContents = formRef.current.innerHTML;
+      const originalContents = document.body.innerHTML;
+      
+      document.body.innerHTML = printContents;
+      window.print();
+      
+      // Restore the original page content
+      document.body.innerHTML = originalContents;
+      window.location.reload();
+    }
+  };
+
+  const mcanRules = [
+    {
+      title: 'Religious Practice',
+      description: 'Every lodger must practice the Islamic religion exclusively. No other religion is allowed to be practiced or proclaimed within the lodge.'
+    },
+    {
+      title: 'Respect and Conduct',
+      description: 'Lodgers must treat each other with utmost respect, following the example of Prophet Muhammad. Fighting or engaging in any form of vocal or physical combat is strictly prohibited.'
+    },
+    {
+      title: 'Dress Code',
+      description: 'Lodgers must dress modestly, adhering to Islamic dress codes. Any dressing style that exposes a significant part of the body is considered inappropriate. Brothers are not expected to wear boxers outside the lodge, and sisters must be fully covered.'
+    },
+    {
+      title: 'Sanitation',
+      description: 'Lodgers must actively participate in maintaining cleanliness within the lodge, including environmental sanitation activities. Failure to participate may result in being asked to leave after three instances.'
+    },
+    {
+      title: 'Financial Obligations',
+      description: 'Lodgers must pay their monthly dues promptly before the 10th of each month. Failure to pay dues for two consecutive months will result in eviction.'
+    },
+    {
+      title: 'Illegal Activities',
+      description: 'Engaging in illegal business activities, including selling contraband, is strictly forbidden. Only lawful means of earning are encouraged.'
+    },
+    {
+      title: 'Visitors',
+      description: 'No visitors are allowed unless approved by MCAN FCT or authorized management officials. Occupants must not invite family or friends to retain their space.'
+    },
+    {
+      title: 'Sound Systems',
+      description: 'The use of loud sound systems, including phone loudspeakers, is strictly prohibited if it causes discomfort to other lodgers.'
+    },
+    {
+      title: 'Hair and Grooming',
+      description: 'Lodgers must maintain neat and presentable hair in line with Islamic guidelines. Un-Islamic hairstyles will not be accepted.'
+    },
+    {
+      title: 'Ownership of Materials',
+      description: 'All materials and items belonging to MCAN remain the property of MCAN. Lodgers cannot claim ownership or acquire them under any circumstances.'
+    }
+  ];
 
   async function searchUsers() {
     if (!searchQuery.trim()) {
