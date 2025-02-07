@@ -72,92 +72,116 @@ export default function ConfirmationLetter() {
         try {
           const doc = new jsPDF();
           const pageWidth = doc.internal.pageSize.getWidth();
+          const pageHeight = doc.internal.pageSize.getHeight();
           let yPos = 20;
 
-          // MCAN Logo (URL from previous document)
-          const logoUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRt9tu2jBmeR0z3xxTGMLY-EHri-sqrUTPXbt5q55knyyqzkNaHyTcMEiE&s=10";
+          // Background gradient
+          doc.setFillColor(240, 255, 240); // Light green
+          doc.rect(0, 0, pageWidth, pageHeight, 'F');
+
+          // Border
+          doc.setDrawColor(34, 139, 34); // Forest Green
+          doc.setLineWidth(2);
+          doc.rect(10, 10, pageWidth - 20, pageHeight - 20);
+
+          // Header with Gradient Effect
+          doc.setFillColor(46, 139, 87); // Sea Green
+          doc.rect(15, 15, pageWidth - 30, 30, 'F');
           
-          // Header with MCAN Logo and Title
+          doc.setTextColor(255, 255, 255); // White text
           doc.setFontSize(20);
           doc.setFont('helvetica', 'bold');
-          doc.text('MUSLIM CORPERS\' ASSOCIATION OF NIGERIA', pageWidth / 2, yPos, { align: 'center' });
-          yPos += 10;
+          doc.text('MUSLIM CORPERS\' ASSOCIATION OF NIGERIA', pageWidth / 2, 35, { align: 'center' });
+
+          doc.setTextColor(0, 0, 0); // Reset to black
           doc.setFontSize(16);
-          doc.text('FCT CHAPTER - ACCOMMODATION CONFIRMATION', pageWidth / 2, yPos, { align: 'center' });
-          yPos += 20;
+          doc.text('FCT CHAPTER - ACCOMMODATION CONFIRMATION', pageWidth / 2, 50, { align: 'center' });
+
+          // Decorative Line
+          doc.setDrawColor(34, 139, 34);
+          doc.line(20, 55, pageWidth - 20, 55);
 
           // Date
-          doc.setFontSize(12);
+          doc.setFontSize(10);
           doc.setFont('helvetica', 'normal');
-          doc.text(`Date: ${new Date().toLocaleDateString()}`, 20, yPos);
-          yPos += 20;
+          doc.text(`Date: ${new Date().toLocaleDateString()}`, pageWidth - 50, 65, { align: 'right' });
 
-          // Resident Details
+          // Resident Details Section
+          yPos = 80;
           doc.setFont('helvetica', 'bold');
-          doc.text('RESIDENT INFORMATION', 20, yPos);
-          yPos += 10;
+          doc.setFillColor(152, 251, 152); // Pale Green
+          doc.rect(20, yPos - 5, pageWidth - 40, 10, 'F');
+          doc.setTextColor(0, 0, 0);
+          doc.text('RESIDENT INFORMATION', 25, yPos);
           
+          yPos += 15;
           doc.setFont('helvetica', 'normal');
-          doc.text(`Full Name: ${selectedProfile.full_name}`, 20, yPos);
-          yPos += 8;
-          doc.text(`Email: ${selectedProfile.email}`, 20, yPos);
-          yPos += 8;
-          doc.text(`Phone: ${selectedProfile.phone || 'Not provided'}`, 20, yPos);
-          yPos += 8;
-          doc.text(`Gender: ${selectedProfile.gender || 'Not specified'}`, 20, yPos);
-          yPos += 8;
-          doc.text(`Address: ${selectedProfile.address || 'Not provided'}`, 20, yPos);
-          yPos += 20;
+          const residentDetails = [
+            `Full Name: ${selectedProfile.full_name}`,
+            `Email: ${selectedProfile.email}`,
+            `Phone: ${selectedProfile.phone || 'Not provided'}`,
+            `Gender: ${selectedProfile.gender || 'Not specified'}`,
+            `Address: ${selectedProfile.address || 'Not provided'}`
+          ];
 
-          // MCAN Specific Rules and Regulations
-          doc.setFont('helvetica', 'bold');
-          doc.text('LODGE RULES AND REGULATIONS', 20, yPos);
+          residentDetails.forEach(detail => {
+            doc.text(detail, 25, yPos);
+            yPos += 8;
+          });
+
+          // Rules and Regulations Section
           yPos += 10;
+          doc.setFont('helvetica', 'bold');
+          doc.setFillColor(152, 251, 152); // Pale Green
+          doc.rect(20, yPos - 5, pageWidth - 40, 10, 'F');
+          doc.text('LODGE RULES AND REGULATIONS', 25, yPos);
 
+          yPos += 15;
           doc.setFont('helvetica', 'normal');
           const mcanRules = [
             '1. Religious Practice: Only Islamic religion is practiced within the lodge.',
             '2. Respect and Conduct: Treat all lodgers with utmost respect.',
             '3. Dress Code: Adhere strictly to modest Islamic dress guidelines.',
-            '4. Sanitation: Actively participate in lodge cleanliness and maintenance.',
-            '5. Financial Obligations: Pay monthly dues before the 10th of each month.',
-            '6. No Illegal Activities: Strictly forbidden within the lodge premises.',
-            '7. Visitors: No unauthorized visitors are allowed.',
-            '8. Sound Systems: Maintain low volume to avoid disturbing others.',
+            '4. Sanitation: Actively participate in lodge cleanliness.',
+            '5. Financial Obligations: Pay monthly dues before the 10th.',
+            '6. No Illegal Activities: Strictly forbidden.',
+            '7. Visitors: No unauthorized visitors allowed.',
+            '8. Sound Systems: Maintain low volume.',
             '9. Personal Belongings: All MCAN materials remain MCAN property.',
-            '10. Conduct: Embody Islamic teachings and principles at all times.'
+            '10. Conduct: Embody Islamic teachings always.'
           ];
 
           mcanRules.forEach(rule => {
-            if (yPos > 250) {
-              doc.addPage();
-              yPos = 20;
-            }
-            doc.text(rule, 20, yPos);
+            doc.text(rule, 25, yPos);
             yPos += 8;
           });
 
-          yPos += 20;
-
-          // Motto
+          // Motto Section
+          yPos += 10;
           doc.setFont('helvetica', 'italic');
-          doc.text('"Say verily, my prayer, my sacrifice, my living, and my dying are for Allah, the lord of the worlds" (Q16:162)', 20, yPos, { maxWidth: pageWidth - 40 });
-          yPos += 20;
+          doc.text('"Say verily, my prayer, my sacrifice, my living, and my dying', 25, yPos, { maxWidth: pageWidth - 50 });
+          doc.text('are for Allah, the lord of the worlds" (Q16:162)', 25, yPos + 6);
 
           // Acceptance Declaration
+          yPos += 30;
           doc.setFont('helvetica', 'bold');
-          doc.text('ACCEPTANCE DECLARATION', 20, yPos);
-          yPos += 10;
+          doc.setFillColor(152, 251, 152); // Pale Green
+          doc.rect(20, yPos - 5, pageWidth - 40, 10, 'F');
+          doc.text('ACCEPTANCE DECLARATION', 25, yPos);
 
-          doc.setFont('helvetica', 'normal');
-          doc.text('I hereby acknowledge that I have read, understood, and agree to abide by', 20, yPos);
-          yPos += 8;
-          doc.text('all MCAN lodge rules and regulations during my stay.', 20, yPos);
-          yPos += 20;
-
-          doc.text('Resident Signature: _____________________', 20, yPos);
           yPos += 15;
-          doc.text('Date: _____________________', 20, yPos);
+          doc.setFont('helvetica', 'normal');
+          doc.text('I hereby acknowledge that I have read, understood, and agree', 25, yPos);
+          doc.text('to abide by all MCAN lodge rules and regulations.', 25, yPos + 6);
+
+          yPos += 30;
+          doc.text('Resident Signature: _____________________', 25, yPos);
+          doc.text('Date: _____________________', pageWidth - 100, yPos);
+
+          // Footer
+          doc.setTextColor(105, 105, 105);
+          doc.setFontSize(8);
+          doc.text('MCAN FCT Chapter - Empowering Corpers through Islamic Principles', pageWidth / 2, pageHeight - 15, { align: 'center' });
 
           // Save the PDF
           doc.save(`mcan_confirmation_letter_${selectedProfile.id}.pdf`);
