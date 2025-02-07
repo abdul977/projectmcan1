@@ -3,10 +3,88 @@ import { supabase } from '@/lib/supabase';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
-import { Search, Printer, ChevronDown, ChevronUp } from 'lucide-react';
+import { Search, Printer, ChevronDown, ChevronUp, FileText, UserCheck, Shield, Calendar, MapPin } from 'lucide-react';
 import { AdminLayout } from '@/components/layout/admin-layout';
 import jsPDF from 'jspdf';
 import toast from 'react-hot-toast';
+
+// Custom Styles for Enhanced Design
+const customStyles = `
+  /* Global Enhancements */
+  .mcan-form-container {
+    @apply bg-gradient-to-br from-green-50 to-green-100 border-2 border-green-200 rounded-2xl shadow-2xl transition-all duration-300 ease-in-out;
+  }
+
+  .mcan-form-header {
+    @apply bg-gradient-to-r from-green-600 to-green-800 text-white py-4 px-6 rounded-t-xl flex items-center justify-between;
+  }
+
+  .mcan-form-section {
+    @apply bg-white/80 backdrop-blur-sm border border-green-100 rounded-xl shadow-md p-6 mb-6 transition-all duration-200 hover:shadow-lg;
+  }
+
+  .mcan-input-group {
+    @apply space-y-4 mb-6 grid grid-cols-2 gap-6;
+  }
+
+  .mcan-input-label {
+    @apply block text-sm font-semibold text-green-800 mb-2 flex items-center;
+  }
+
+  .mcan-input-field {
+    @apply w-full px-4 py-2 border-2 border-green-200 rounded-lg focus:ring-2 focus:ring-green-400 focus:border-transparent transition-all duration-200;
+  }
+
+  .mcan-checkbox-group {
+    @apply space-y-3 bg-green-50 p-4 rounded-lg border border-green-100;
+  }
+
+  .mcan-checkbox-item {
+    @apply flex items-start space-x-3 text-green-900;
+  }
+
+  .mcan-validation-section {
+    @apply bg-gradient-to-r from-green-100 to-green-200 border-2 border-green-300 rounded-xl p-6 text-center;
+  }
+
+  /* Responsive Typography */
+  .mcan-title {
+    @apply text-3xl font-extrabold text-green-900 tracking-tight;
+  }
+
+  .mcan-subtitle {
+    @apply text-xl font-bold text-green-700 mb-4;
+  }
+
+  /* Hover and Interactive Effects */
+  .mcan-hover-effect {
+    @apply transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-xl;
+  }
+
+  /* Print Styles */
+  @media print {
+    .mcan-form-container {
+      @apply bg-white border-none shadow-none;
+    }
+    .print-hidden {
+      @apply hidden;
+    }
+  }
+
+  /* Accessibility Enhancements */
+  .mcan-focus-ring {
+    @apply focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2;
+  }
+
+  /* Decorative Elements */
+  .mcan-divider {
+    @apply border-t-2 border-green-300 my-6;
+  }
+
+  .mcan-badge {
+    @apply inline-block bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-semibold;
+  }
+`;
 
 interface Profile {
   id: string;
