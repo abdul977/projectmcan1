@@ -209,13 +209,17 @@ const BookingsManagement = () => {
       const transformedData = (data || [])
         .filter(booking => ['active', 'approved', 'confirmed', 'pending'].includes(booking.status))
         .map(booking => {
-          const guest: { email: string } = booking.guest 
-            ? { email: booking.guest.email } 
-            : { email: 'N/A' };
+          const guest = {
+            email: booking.guest && 'email' in booking.guest 
+              ? booking.guest.email 
+              : 'N/A'
+          };
           
-          const room: { name: string } = booking.room 
-            ? { name: booking.room.name } 
-            : { name: 'N/A' };
+          const room = {
+            name: booking.room && 'name' in booking.room 
+              ? booking.room.name 
+              : 'N/A'
+          };
           
           return {
             ...booking,
