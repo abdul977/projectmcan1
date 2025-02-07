@@ -190,7 +190,7 @@ const BookingsManagement = () => {
           receipt_path,
           amount_paid,
           guest:profiles!inner(email),
-          room:rooms!fk_bookings_room_id(number, type)
+          room:rooms!fk_bookings_room_id(name)
         `)
         .order('created_at', { ascending: false })
         .limit(100);
@@ -211,7 +211,7 @@ const BookingsManagement = () => {
         .filter(booking => ['active', 'approved', 'confirmed', 'pending'].includes(booking.status))
         .map(booking => {
           const guest = booking.guest ? { email: booking.guest.email } : { email: 'N/A' };
-          const room = booking.room ? { number: booking.room.number, type: booking.room.type } : { number: 'N/A', type: 'N/A' };
+          const room = booking.room ? { name: booking.room.name } : { name: 'N/A' };
           
           return {
             ...booking,
