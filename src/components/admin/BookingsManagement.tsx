@@ -190,7 +190,7 @@ const BookingsManagement = () => {
           receipt_path,
           amount_paid,
           guest:profiles!inner(email),
-          room:rooms!inner(number, type)
+          room:rooms!fk_bookings_room_id(number, type)
         `)
         .order('created_at', { ascending: false })
         .limit(100);
