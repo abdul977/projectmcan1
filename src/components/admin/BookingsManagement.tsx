@@ -189,13 +189,8 @@ const BookingsManagement = () => {
           updated_at,
           receipt_path,
           amount_paid,
-          guest:profiles!user_id (
-            email
-          ),
-          room:rooms!room_id (
-            number,
-            type
-          )
+          guest:profiles!inner(email),
+          room:rooms!inner(number, type)
         `)
         .order('created_at', { ascending: false })
         .limit(100);
@@ -203,22 +198,29 @@ const BookingsManagement = () => {
       console.log('Raw data from database:', data);
 
       if (error) {
-        console.error('Database error:', error);
-        throw error;
+        console.error('Detailed Database error:', {
+          code: error.code,
+          message: error.message,
+          details: error.details
+        });
+        toast.error(`Database Error: ${error.message}`);
+        return;
       }
 
-      const transformedData = (data || [] as SupabaseResponse[])
+      const transformedData = (data || [])
         .filter(booking => ['active', 'approved', 'confirmed', 'pending'].includes(booking.status))
         .map(booking => ({
           ...booking,
           guest: {
-            email: booking.guest?.[0]?.email || 'N/A'
+            email: booking.guest?.email || 'N/A'
           },
           room: {
-            number: booking.room?.[0]?.number || 'N/A',
-            type: booking.room?.[0]?.type || 'N/A'
+            number: booking.room?.number || 'N/A',
+            type: booking.room?.type || 'N/A'
           }
         })) as Booking[];
+
+      console.log('Transformed bookings:', transformedData);
         
       console.log('Transformed bookings:', transformedData);
 
