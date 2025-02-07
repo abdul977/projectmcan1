@@ -212,16 +212,14 @@ const BookingsManagement = () => {
         .map(booking => ({
           ...booking,
           guest: {
-            email: booking.guest?.email || 'N/A'
+            email: booking.guest.email || 'N/A'
           },
           room: {
-            number: booking.room?.number || 'N/A',
-            type: booking.room?.type || 'N/A'
+            number: booking.room.number || 'N/A',
+            type: booking.room.type || 'N/A'
           }
         })) as Booking[];
 
-      console.log('Transformed bookings:', transformedData);
-        
       console.log('Transformed bookings:', transformedData);
 
       setBookings(transformedData);
