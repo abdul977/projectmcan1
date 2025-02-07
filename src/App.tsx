@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Navbar } from '@/components/layout/navbar';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from '@/contexts/auth-context';
+import { RequireAdmin } from '@/components/auth/require-admin';
 import HomePage from '@/pages/home';
 import LoginPage from '@/pages/login';
 import RegisterPage from '@/pages/register';
@@ -25,8 +26,24 @@ function App() {
               <Route path="/dashboard" element={<DashboardPage />} />
               <Route path="/book" element={<BookingPage />} />
               <Route path="/payment" element={<PaymentPage />} />
-              <Route path="/admin" element={<AdminDashboard />} />
-              <Route path="/admin/confirmation-letter" element={<ConfirmationLetter />} />
+              
+              {/* Protected Admin Routes */}
+              <Route
+                path="/admin"
+                element={
+                  <RequireAdmin>
+                    <AdminDashboard />
+                  </RequireAdmin>
+                }
+              />
+              <Route
+                path="/admin/confirmation-letter"
+                element={
+                  <RequireAdmin>
+                    <ConfirmationLetter />
+                  </RequireAdmin>
+                }
+              />
             </Routes>
           </main>
         </div>

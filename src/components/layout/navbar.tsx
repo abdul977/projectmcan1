@@ -1,10 +1,12 @@
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Home, Moon, User } from 'lucide-react';
+import { Home, Moon, User, Shield } from 'lucide-react';
 import { useAuth } from '@/hooks/use-auth';
+import { useAdmin } from '@/hooks/use-admin';
 
 export function Navbar() {
   const { user, signOut } = useAuth();
+  const { isAdminUser, loading } = useAdmin();
 
   return (
     <nav className="border-b bg-white">
@@ -32,6 +34,14 @@ export function Navbar() {
                     Dashboard
                   </Button>
                 </Link>
+                {!loading && isAdminUser && (
+                  <Link to="/admin">
+                    <Button variant="ghost" size="sm">
+                      <Shield className="mr-2 h-4 w-4" />
+                      Admin
+                    </Button>
+                  </Link>
+                )}
                 <Button variant="outline" size="sm" onClick={() => signOut()}>
                   Sign Out
                 </Button>
