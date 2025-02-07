@@ -425,9 +425,13 @@ export default function ConfirmationLetter() {
             <Card className="p-6 space-y-6 bg-white shadow-lg" ref={formRef}>
               {/* Letterhead with Logo Placeholders */}
               <div className="relative flex items-center justify-between border-b-2 border-green-600 pb-4">
-                {/* NYSC Logo Placeholder - Left Side */}
-                <div className="absolute left-0 top-0 w-24 h-24 bg-gray-100 flex items-center justify-center border border-green-200 rounded-lg">
-                  <span className="text-xs text-gray-500">NYSC Logo</span>
+                {/* NYSC Logo - Left Side */}
+                <div className="absolute left-0 top-0 w-24 h-24 flex items-center justify-center">
+                  <img 
+                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/NYSC_LOGO.svg/367px-NYSC_LOGO.svg.png?20221108085710" 
+                    alt="NYSC Logo" 
+                    className="max-w-full max-h-full object-contain"
+                  />
                 </div>
 
                 {/* MCAN Logo Placeholder - Right Side */}
