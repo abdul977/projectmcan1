@@ -285,24 +285,134 @@ export default function ConfirmationLetter() {
           )}
 
           {selectedProfile && (
-            <Card className="p-6 space-y-4">
-              <div className="grid gap-4">
-                <h3 className="text-lg font-semibold">Selected User Details</h3>
-                <div className="grid gap-2">
-                  <p><span className="font-medium">Name:</span> {selectedProfile.full_name}</p>
-                  <p><span className="font-medium">Email:</span> {selectedProfile.email}</p>
-                  <p><span className="font-medium">Phone:</span> {selectedProfile.phone || 'Not provided'}</p>
-                  <p><span className="font-medium">Gender:</span> {selectedProfile.gender || 'Not specified'}</p>
-                  <p><span className="font-medium">Address:</span> {selectedProfile.address || 'Not provided'}</p>
+            <Card className="p-6 space-y-6 bg-white shadow-lg">
+              {/* Letterhead */}
+              <div className="text-center border-b-2 border-green-600 pb-4">
+                <h1 className="text-2xl font-bold text-green-800">
+                  MUSLIM CORPERS' ASSOCIATION OF NIGERIA
+                </h1>
+                <h2 className="text-xl text-green-600">FCT CHAPTER</h2>
+                <p className="italic text-sm mt-2">
+                  "Say verily, my prayer, my sacrifice, my living, and my dying are for Allah, the lord of the worlds" (Q16:162)
+                </p>
+              </div>
+
+              {/* Accommodation Form */}
+              <div>
+                <h3 className="text-lg font-semibold mb-4 text-center">
+                  ACCOMMODATION FORM
+                </h3>
+                <p className="text-sm italic text-center mb-4">
+                  NOTE: Kindly go through the rules and regulations before filling the form.
+                </p>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">Full Name</label>
+                    <input 
+                      type="text" 
+                      value={selectedProfile.full_name} 
+                      readOnly 
+                      className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">Address</label>
+                    <input 
+                      type="text" 
+                      value={selectedProfile.address || ''} 
+                      readOnly 
+                      className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">Email</label>
+                    <input 
+                      type="text" 
+                      value={selectedProfile.email} 
+                      readOnly 
+                      className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">Mobile Number</label>
+                    <input 
+                      type="text" 
+                      value={selectedProfile.phone || ''} 
+                      readOnly 
+                      className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">Gender</label>
+                    <input 
+                      type="text" 
+                      value={selectedProfile.gender || ''} 
+                      readOnly 
+                      className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
+                    />
+                  </div>
                 </div>
-                <Button
-                  className="w-full"
-                  size="lg"
-                  onClick={generatePDF}
-                  disabled={loading}
-                >
-                  Generate Confirmation Letter
-                </Button>
+
+                {/* Additional Form Fields */}
+                <div className="mt-6 grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">Call-Up Number</label>
+                    <input 
+                      type="text" 
+                      className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">State of Origin</label>
+                    <input 
+                      type="text" 
+                      className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
+                    />
+                  </div>
+                </div>
+
+                {/* Emergency Contact and Next of Kin */}
+                <div className="mt-6">
+                  <h4 className="text-md font-semibold mb-4">Emergency Contact</h4>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700">Full Name</label>
+                      <input 
+                        type="text" 
+                        className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700">Phone Numbers</label>
+                      <div className="flex space-x-2">
+                        <input 
+                          type="text" 
+                          className="mt-1 block w-1/2 border border-gray-300 rounded-md shadow-sm py-2 px-3"
+                        />
+                        <input 
+                          type="text" 
+                          className="mt-1 block w-1/2 border border-gray-300 rounded-md shadow-sm py-2 px-3"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Signature and Date */}
+                <div className="mt-6 flex justify-between items-center">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">Signature</label>
+                    <div className="mt-1 h-12 w-48 border border-gray-300 rounded-md"></div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700">Date</label>
+                    <input 
+                      type="date" 
+                      className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
+                    />
+                  </div>
+                </div>
               </div>
             </Card>
           )}
