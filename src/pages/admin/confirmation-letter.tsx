@@ -344,7 +344,7 @@ export default function ConfirmationLetter() {
           )}
 
           {selectedProfile && (
-            <Card className="p-6 space-y-6 bg-white shadow-lg">
+            <Card className="p-6 space-y-6 bg-white shadow-lg" ref={formRef}>
               {/* Letterhead */}
               <div className="text-center border-b-2 border-green-600 pb-4">
                 <h1 className="text-2xl font-bold text-green-800">
@@ -355,6 +355,44 @@ export default function ConfirmationLetter() {
                   "Say verily, my prayer, my sacrifice, my living, and my dying are for Allah, the lord of the worlds" (Q16:162)
                 </p>
               </div>
+
+              {/* Action Buttons */}
+              <div className="flex justify-end space-x-4 print:hidden">
+                <Button 
+                  onClick={() => setShowRules(!showRules)}
+                  variant="outline"
+                  className="flex items-center"
+                >
+                  {showRules ? <ChevronUp className="mr-2 h-4 w-4" /> : <ChevronDown className="mr-2 h-4 w-4" />}
+                  {showRules ? 'Hide Rules' : 'View Rules'}
+                </Button>
+                <Button 
+                  onClick={handlePrint}
+                  variant="outline"
+                  className="flex items-center"
+                >
+                  <Printer className="mr-2 h-4 w-4" /> Print Form
+                </Button>
+              </div>
+
+              {/* Rules Section */}
+              {showRules && (
+                <div className="bg-gray-50 p-4 rounded-lg mb-6">
+                  <h3 className="text-lg font-semibold mb-4 text-center text-green-800">
+                    MCAN LODGE RULES AND REGULATIONS
+                  </h3>
+                  {mcanRules.map((rule, index) => (
+                    <div key={index} className="mb-4">
+                      <h4 className="font-semibold text-green-700 mb-2">
+                        {rule.title}
+                      </h4>
+                      <p className="text-gray-700">
+                        {rule.description}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              )}
 
               {/* Accommodation Form */}
               <div>
