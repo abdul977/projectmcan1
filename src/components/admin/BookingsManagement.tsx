@@ -153,23 +153,27 @@ const BookingsManagement = () => {
       const { data, error } = await supabase
         .from('bookings')
         .select(`
-          bookings.id,
-          bookings.user_id,
-          bookings.room_id,
-          bookings.check_in_date,
-          bookings.check_out_date,
-          bookings.total_price,
-          bookings.status,
-          bookings.payment_status,
-          bookings.created_at,
-          bookings.updated_at,
-          bookings.receipt_path,
-          bookings.amount_paid,
-          profiles:profiles(full_name, email),
-          rooms:rooms(number, type)
+          id,
+          user_id,
+          room_id,
+          check_in_date,
+          check_out_date,
+          total_price,
+          status,
+          payment_status,
+          created_at,
+          updated_at,
+          receipt_path,
+          amount_paid,
+          profiles (
+            full_name,
+            email
+          ),
+          rooms (
+            number,
+            type
+          )
         `)
-        .eq('profiles.id', 'bookings.user_id')
-        .eq('rooms.id', 'bookings.room_id')
         .order('created_at', { ascending: false })
         .limit(100);
 
