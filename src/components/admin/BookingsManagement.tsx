@@ -45,8 +45,8 @@ interface Booking {
   updated_at: string;
   receipt_path: string | null;
   amount_paid: number | null;
-  profiles: { full_name: string; email: string; };
-  rooms: { number: string; type: string; };
+  guest: { email: string; };
+  room: { number: string; type: string; };
 }
 
 const BookingsManagement = () => {
@@ -64,8 +64,15 @@ const BookingsManagement = () => {
       ),
     },
     {
-      accessorKey: 'profiles.full_name',
-      header: 'Guest Name',
+      accessorKey: 'user_id',
+      header: 'Guest ID',
+      cell: ({ row }) => (
+        <span className="font-mono text-xs">{row.getValue('user_id')}</span>
+      ),
+    },
+    {
+      accessorKey: 'guest.email',
+      header: 'Guest Email',
     },
     {
       accessorKey: 'rooms.number',
@@ -166,7 +173,6 @@ const BookingsManagement = () => {
           receipt_path,
           amount_paid,
           guest:profiles!user_id (
-            full_name,
             email
           ),
           room:rooms!room_id (
@@ -184,15 +190,8 @@ const BookingsManagement = () => {
         throw error;
       }
 
-      const transformedData = (data || [] as any[])
-        .filter(booking => ['active', 'approved', 'confirmed', 'pending'].includes(booking.status))
-        .map(booking => ({
-          ...booking,
-          'profiles.full_name': booking.guest?.full_name || 'N/A',
-          'profiles.email': booking.guest?.email || 'N/A',
-          'rooms.number': booking.room?.number || 'N/A',
-          'rooms.type': booking.room?.type || 'N/A'
-        }));
+      const transformedData = (data || [] as Booking[])
+        .filter(booking => ['active', 'approved', 'confirmed', 'pending'].includes(booking.status));
         
       console.log('Transformed bookings:', transformedData);
 
