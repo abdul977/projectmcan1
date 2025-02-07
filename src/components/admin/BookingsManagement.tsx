@@ -209,16 +209,16 @@ const BookingsManagement = () => {
 
       const transformedData = (data || [])
         .filter(booking => ['active', 'approved', 'confirmed', 'pending'].includes(booking.status))
-        .map(booking => ({
-          ...booking,
-          guest: {
-            email: booking.guest?.email ?? 'N/A'
-          },
-          room: {
-            number: booking.room?.number ?? 'N/A',
-            type: booking.room?.type ?? 'N/A'
-          }
-        })) as Booking[];
+        .map(booking => {
+          const guest = booking.guest ? { email: booking.guest.email } : { email: 'N/A' };
+          const room = booking.room ? { number: booking.room.number, type: booking.room.type } : { number: 'N/A', type: 'N/A' };
+          
+          return {
+            ...booking,
+            guest,
+            room
+          } as Booking;
+        });
 
       console.log('Transformed bookings:', transformedData);
 
