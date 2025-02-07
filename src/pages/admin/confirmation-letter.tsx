@@ -138,22 +138,67 @@ export default function ConfirmationLetter() {
 
           yPos += 15;
           doc.setFont('helvetica', 'normal');
+          // Detailed MCAN Rules with Icons
           const mcanRules = [
-            '1. Religious Practice: Only Islamic religion is practiced within the lodge.',
-            '2. Respect and Conduct: Treat all lodgers with utmost respect.',
-            '3. Dress Code: Adhere strictly to modest Islamic dress guidelines.',
-            '4. Sanitation: Actively participate in lodge cleanliness.',
-            '5. Financial Obligations: Pay monthly dues before the 10th.',
-            '6. No Illegal Activities: Strictly forbidden.',
-            '7. Visitors: No unauthorized visitors allowed.',
-            '8. Sound Systems: Maintain low volume.',
-            '9. Personal Belongings: All MCAN materials remain MCAN property.',
-            '10. Conduct: Embody Islamic teachings always.'
+            {
+              icon: '🕌',
+              title: 'Religious Practice',
+              description: 'Only Islamic religion is practiced within the lodge. No other religion is allowed to be practiced or proclaimed.'
+            },
+            {
+              icon: '🤝',
+              title: 'Respect and Conduct',
+              description: 'Treat all lodgers with utmost respect, following the example of Prophet Muhammad. Fighting or any form of vocal/physical combat is strictly prohibited.'
+            },
+            {
+              icon: '👗',
+              title: 'Dress Code',
+              description: 'Dress modestly, adhering to Islamic dress codes. Exposing significant body parts is inappropriate. Brothers avoid boxers outside, sisters must be fully covered.'
+            },
+            {
+              icon: '🧹',
+              title: 'Sanitation',
+              description: 'Actively participate in lodge cleanliness and environmental sanitation. Non-participation may result in eviction after three instances.'
+            },
+            {
+              icon: '💰',
+              title: 'Financial Obligations',
+              description: 'Pay monthly dues before the 10th of each month. Failure to pay for two consecutive months will result in eviction.'
+            },
+            {
+              icon: '🚫',
+              title: 'Illegal Activities',
+              description: 'No illegal business activities, including selling contraband. Only lawful means of earning are encouraged.'
+            },
+            {
+              icon: '👥',
+              title: 'Visitors',
+              description: 'No visitors allowed without approval from MCAN FCT or authorized management. Do not invite family or friends to retain space.'
+            },
+            {
+              icon: '🔊',
+              title: 'Sound Systems',
+              description: 'Strictly prohibit loud sound systems, including phone loudspeakers, that cause discomfort to other lodgers.'
+            },
+            {
+              icon: '💇‍♂️',
+              title: 'Hair and Grooming',
+              description: 'Maintain neat and presentable hair in line with Islamic guidelines. Un-Islamic hairstyles are not accepted.'
+            },
+            {
+              icon: '📜',
+              title: 'Ownership of Materials',
+              description: 'All MCAN materials remain MCAN property. Lodgers cannot claim ownership or acquire them under any circumstances.'
+            }
           ];
 
           mcanRules.forEach(rule => {
-            doc.text(rule, 25, yPos);
-            yPos += 8;
+            doc.text(`${rule.icon} ${rule.title}`, 25, yPos);
+            yPos += 10;
+            doc.setFontSize(9);
+            doc.text(rule.description, 35, yPos, { maxWidth: pageWidth - 70 });
+            yPos += 15;
+            doc.setFontSize(10);
           });
 
           // Motto Section
