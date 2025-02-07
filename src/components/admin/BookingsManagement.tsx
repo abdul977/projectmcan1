@@ -190,8 +190,18 @@ const BookingsManagement = () => {
         throw error;
       }
 
-      const transformedData = (data || [] as Booking[])
-        .filter(booking => ['active', 'approved', 'confirmed', 'pending'].includes(booking.status));
+      const transformedData = (data || [])
+        .filter(booking => ['active', 'approved', 'confirmed', 'pending'].includes(booking.status))
+        .map(booking => ({
+          ...booking,
+          guest: {
+            email: booking.guest?.email || 'N/A'
+          },
+          room: {
+            number: booking.room?.number || 'N/A',
+            type: booking.room?.type || 'N/A'
+          }
+        })) as Booking[];
         
       console.log('Transformed bookings:', transformedData);
 
