@@ -55,7 +55,7 @@ export function DashboardStats() {
       const { data: bookings, error: bookingsError } = await supabase
         .from('bookings')
         .select('*')
-        .in('status', ['confirmed', 'pending'])
+        .eq('status', 'active')
         .eq('payment_status', 'paid');
 
       if (bookingsError) {
@@ -69,7 +69,7 @@ export function DashboardStats() {
         .select(`
           id,
           booking_id,
-          payment_verifications!inner (
+          payment_verifications (
             status,
             created_at
           )
@@ -83,8 +83,8 @@ export function DashboardStats() {
 
       // Count pending payments
       const pendingPaymentsCount = receipts?.filter(receipt => {
-        const [latestVerification] = receipt.payment_verifications || [0];
-        return !latestVerification || latestVerification.status === 'pending';
+        const [latestVerification] = receipt.payment_verifications || [];
+        return !latestVerification || latestVerification?.status === 'pending';
       }).length || 0;
 
       // Log the results for debugging
