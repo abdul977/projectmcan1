@@ -345,15 +345,28 @@ export default function ConfirmationLetter() {
 
           {selectedProfile && (
             <Card className="p-6 space-y-6 bg-white shadow-lg" ref={formRef}>
-              {/* Letterhead */}
-              <div className="text-center border-b-2 border-green-600 pb-4">
-                <h1 className="text-2xl font-bold text-green-800">
-                  MUSLIM CORPERS' ASSOCIATION OF NIGERIA
-                </h1>
-                <h2 className="text-xl text-green-600">FCT CHAPTER</h2>
-                <p className="italic text-sm mt-2">
-                  "Say verily, my prayer, my sacrifice, my living, and my dying are for Allah, the lord of the worlds" (Q16:162)
-                </p>
+              {/* Letterhead with Logo Placeholders */}
+              <div className="relative flex items-center justify-between border-b-2 border-green-600 pb-4">
+                {/* NYSC Logo Placeholder - Left Side */}
+                <div className="absolute left-0 top-0 w-24 h-24 bg-gray-100 flex items-center justify-center border border-green-200 rounded-lg">
+                  <span className="text-xs text-gray-500">NYSC Logo</span>
+                </div>
+
+                {/* MCAN Logo Placeholder - Right Side */}
+                <div className="absolute right-0 top-0 w-24 h-24 bg-gray-100 flex items-center justify-center border border-green-200 rounded-lg">
+                  <span className="text-xs text-gray-500">MCAN Logo</span>
+                </div>
+
+                {/* Centered Letterhead Content */}
+                <div className="mx-auto text-center">
+                  <h1 className="text-2xl font-bold text-green-800">
+                    MUSLIM CORPERS' ASSOCIATION OF NIGERIA
+                  </h1>
+                  <h2 className="text-xl text-green-600">FCT CHAPTER</h2>
+                  <p className="italic text-sm mt-2">
+                    "Say verily, my prayer, my sacrifice, my living, and my dying are for Allah, the lord of the worlds" (Q16:162)
+                  </p>
+                </div>
               </div>
 
               {/* Action Buttons */}
